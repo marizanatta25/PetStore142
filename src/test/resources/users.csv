@@ -1,0 +1,4 @@
+id,username,firstName,lastName,email,password,phone
+1,user1,Nome1,Sobrenome1,email1@mail.com,pass1,1111
+2,user2,Nome2,Sobrenome2,email2@mail.com,pass2,2222
+3,user3,Nome3,Sobrenome3,email3@mail.com,pass3,3333
