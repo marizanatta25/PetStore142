@@ -3,6 +3,7 @@ package common;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class HttpClientUtil {
 
@@ -11,11 +12,11 @@ public class HttpClientUtil {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod(method);
         conn.setRequestProperty("Content-Type", "application/json");
-        conn.setDoOutput(true);
 
         if (payload != null && !payload.isEmpty()) {
+            conn.setDoOutput(true);
             try (OutputStream os = conn.getOutputStream()) {
-                os.write(payload.getBytes());
+                os.write(payload.getBytes(StandardCharsets.UTF_8));
                 os.flush();
             }
         }
@@ -26,11 +27,12 @@ public class HttpClientUtil {
     public static String getResponse(HttpURLConnection conn) throws IOException {
         InputStream is = conn.getResponseCode() >= 400 ? conn.getErrorStream() : conn.getInputStream();
         BufferedReader in = new BufferedReader(new InputStreamReader(is));
-        String inputLine;
         StringBuilder content = new StringBuilder();
+        String inputLine;
 
-        while ((inputLine = in.readLine()) != null)
+        while ((inputLine = in.readLine()) != null) {
             content.append(inputLine);
+        }
 
         in.close();
         return content.toString();
